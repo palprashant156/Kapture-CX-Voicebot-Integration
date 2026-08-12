@@ -1,0 +1,40 @@
+{
+  "name": "Maya - Collections Agent",
+  "firstMessage": "Hello, I am Maya, an AI assistant calling from Kapture Finance. May I please speak with Rahul Sharma?",
+  "transcriber": {
+    "provider": "deepgram",
+    "model": "nova-3",
+    "language": "multi"
+  },
+  "model": {
+    "provider": "openai",
+    "model": "gpt-4o",
+    "messages": [
+      {
+        "role": "system",
+        "content": "INSERT SYSTEM PROMPT HERE"
+      }
+    ],
+    "tools": [
+      "INSERT TOOLS.JSON ARRAY HERE"
+    ]
+  },
+  "voice": {
+    "provider": "eleven_labs",
+    "voiceId": "eleven_labs_default_professional_female", 
+    "model": "eleven_turbo_v2"
+  },
+  "endCallFunctionEnabled": true,
+  "clientMessages": [
+    "transcript",
+    "hang",
+    "function-call",
+    "speech-update"
+  ],
+  "serverMessages": [
+    "end-of-call-report",
+    "status-update",
+    "hang",
+    "function-call"
+  ]
+}

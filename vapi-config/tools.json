@@ -1,0 +1,135 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "verify_customer",
+      "description": "Verifies the customer's identity before any debt information can be disclosed. MUST be called after greeting.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "dob": {
+            "type": "string",
+            "description": "The customer's date of birth in DD-MM-YYYY format."
+          },
+          "mobileLast4": {
+            "type": "string",
+            "description": "The last 4 digits of the customer's registered mobile number."
+          }
+        },
+        "required": ["dob", "mobileLast4"]
+      }
+    },
+    "server": {
+      "url": "https://YOUR_WEBHOOK_URL/api/verify-customer"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "get_account_details",
+      "description": "Retrieves the customer's loan details. Will fail with AUTH_REQUIRED if verify_customer has not succeeded first.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    "server": {
+      "url": "https://YOUR_WEBHOOK_URL/api/get-account-details"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "log_promise_to_pay",
+      "description": "Logs a promise to pay (PTP) when the customer commits to making a payment.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "ptpDate": {
+            "type": "string",
+            "description": "The date the customer promised to pay (e.g., '15-Aug-2026')."
+          },
+          "ptpAmount": {
+            "type": "number",
+            "description": "The amount the customer promised to pay."
+          }
+        },
+        "required": ["ptpDate", "ptpAmount"]
+      }
+    },
+    "server": {
+      "url": "https://YOUR_WEBHOOK_URL/api/log-promise-to-pay"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "send_payment_link",
+      "description": "Sends a payment link to the customer via SMS or WhatsApp.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "channel": {
+            "type": "string",
+            "enum": ["sms", "whatsapp"],
+            "description": "The channel to send the link through."
+          }
+        },
+        "required": ["channel"]
+      }
+    },
+    "server": {
+      "url": "https://YOUR_WEBHOOK_URL/api/send-payment-link"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "escalate_to_agent",
+      "description": "Initiates a warm transfer to a human agent. Use this for disputes, hostilily, or 3 failed auth attempts.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "The reason for the escalation (e.g., 'dispute', 'auth_failed', 'hostile')."
+          }
+        },
+        "required": ["reason"]
+      }
+    },
+    "server": {
+      "url": "https://YOUR_WEBHOOK_URL/api/escalate-to-agent"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "mark_disposition",
+      "description": "Logs the final outcome of the call. ALWAYS call this before ending the conversation.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "dispositionCode": {
+            "type": "string",
+            "enum": [
+              "PTP_COLLECTED", "PARTIAL_PTP", "HARDSHIP_NOTED", 
+              "DISPUTE_ESCALATED", "ALREADY_PAID", "CALLBACK_SCHEDULED", 
+              "DNC_OPTED", "WRONG_PERSON", "AUTH_FAILED", 
+              "NO_RESPONSE", "HOSTILE", "TOOL_FAILURE"
+            ],
+            "description": "The categorical outcome of the call."
+          },
+          "notes": {
+            "type": "string",
+            "description": "Optional brief notes about the call outcome."
+          }
+        },
+        "required": ["dispositionCode"]
+      }
+    },
+    "server": {
+      "url": "https://YOUR_WEBHOOK_URL/api/mark-disposition"
+    }
+  }
+]
