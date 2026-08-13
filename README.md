@@ -51,18 +51,18 @@ By default, it runs on port 3000.
 Vapi needs a public URL to reach your local server.
 
 ```bash
-ngrok http 3000
+ssh -p 443 -R0:localhost:3000 a.pinggy.io
 ```
-*Note the HTTPS forwarding URL (e.g., `https://abc-123.ngrok-free.app`).*
+*Note the HTTPS forwarding URL (e.g., `https://rnxyz.run.pinggy-free.link`).*
 
 ### 3. Configure Vapi.ai
 
 1. Create a free account at [Vapi.ai](https://vapi.ai).
 2. Go to the **Assistants** tab and create a new assistant.
 3. Copy the contents of `vapi-config/system-prompt.md` into the System Prompt section.
-4. Replace `YOUR_WEBHOOK_URL` in `vapi-config/tools.json` with your ngrok URL.
+4. Replace `YOUR_WEBHOOK_URL` in `vapi-config/tools.json` with your Pinggy URL.
 5. Add the tools from `tools.json` using Vapi's Function Tool creator.
-6. In **Settings**, set the Server URL to your ngrok URL (e.g., `https://abc-123.ngrok-free.app/api/vapi-webhook`) to receive call lifecycle events (like `end-of-call-report` for session cleanup).
+6. In **Settings**, set the Server URL to your Pinggy URL (e.g., `https://rnxyz.run.pinggy-free.link/api/vapi-webhook`) to receive call lifecycle events (like `end-of-call-report` for session cleanup).
 7. Configure STT to Deepgram Nova-3, Model to GPT-4o, and Voice to your preferred ElevenLabs voice.
 
 ### 4. Test the Bot
